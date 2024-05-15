@@ -13,12 +13,7 @@
 #define DELIMITER "#"
 
 int main(int _argc, char **_argv)
-{   
-    DORM* LEFT = (DORM*) malloc(sizeof(DORM));
-    strcpy(LEFT->name,"left");
-    LEFT->capacity = 10;
-    LEFT->gender = GENDER_FEMALE;
-    LEFT->residents_num = 0;
+{
     DORM dorms[MAX_DORMS];
     STUDENT students[MAX_STUDENTS];
     
@@ -85,26 +80,19 @@ int main(int _argc, char **_argv)
                         residentPtrs[residentCount++] = &students[i];
                     }
                 }
+                emptyDorm(&dorms[dormInd], residentPtrs, residentCount);
             }
-          
+        }
+    }
 
-            } else if (strcmp(token, "student-leave") == 0){
-              token = strtok(NULL, DELIMITER);
-              short studentInd = findSTUDENTInd(token, students,totalStudent);
-              short dormInd = findDORMInd(students->dorm->name, dorms, totalDorm);
-                unassign(&students[studentInd], &dorms[dormInd]);
-                students[studentInd].dorm = LEFT; 
-            }
-        
-        
-        // Print student details
+    // Print student details
     for (size_t i = 0; i < totalStudent; i++) {
-        printSTUDENT(students[i]);
+        printStudentDetails(students[i]);
     }
 
     // Print dorm details
     for (size_t i = 0; i < totalDorm; i++) {
-        print_dorm(dorms[i]);
+        print_DORMDetails(dorms[i], true);
     }
 
     // Print unassigned students after dorm-empty
@@ -118,8 +106,6 @@ int main(int _argc, char **_argv)
     for (size_t i = 0; i < totalDorm; i++) {
         print_DORMDetails(dorms[i], true);
     }
+
     return 0;
-
-
-
-    }
+}

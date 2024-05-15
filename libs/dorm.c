@@ -29,7 +29,7 @@ void print_DORMDetails(DORM dorm_to_print, bool print_capacity) {
 short findDORMInd(char *_name, DORM *daftar, int length) {
     for (short i = 0; i < length; i++) {
         if (strcmp(daftar[i].name, _name) == 0)
-            return i;
+        return i;
     }
     return -1;
 }

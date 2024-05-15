@@ -13,7 +13,12 @@
 #define DELIMITER "#"
 
 int main(int _argc, char **_argv)
-{
+{   
+    DORM* LEFT = (DORM*) malloc(sizeof(DORM));
+    strcpy(LEFT->name,"left");
+    LEFT->capacity = 10;
+    LEFT->gender = GENDER_FEMALE;
+    LEFT->residents_num = 0;
     DORM dorms[MAX_DORMS];
     STUDENT students[MAX_STUDENTS];
     
@@ -31,6 +36,28 @@ int main(int _argc, char **_argv)
 
         // Break on '---'
         if (strcmp(line, "---") == 0) break;
+
+         // Print student details
+    for (size_t i = 0; i < totalStudent; i++) {
+        printStudentDetails(students[i]);
+    }
+
+    // Print dorm details
+    for (size_t i = 0; i < totalDorm; i++) {
+        print_DORMDetails(dorms[i], true);
+    }
+
+    // Print unassigned students after dorm-empty
+    for (size_t i = 0; i < totalStudent; i++) {
+        if (students[i].dorm == NULL) {
+            printStudentDetails(students[i]);
+        }
+    }
+
+    // Print dorm details after dorm-empty
+    for (size_t i = 0; i < totalDorm; i++) {
+        print_DORMDetails(dorms[i], true);
+    }
         
         // Process dorm and student commands
         token = strtok(line, DELIMITER);
@@ -83,29 +110,15 @@ int main(int _argc, char **_argv)
                 emptyDorm(&dorms[dormInd], residentPtrs, residentCount);
             }
         }
-    }
-
-    // Print student details
-    for (size_t i = 0; i < totalStudent; i++) {
-        printStudentDetails(students[i]);
-    }
-
-    // Print dorm details
-    for (size_t i = 0; i < totalDorm; i++) {
-        print_DORMDetails(dorms[i], true);
-    }
-
-    // Print unassigned students after dorm-empty
-    for (size_t i = 0; i < totalStudent; i++) {
-        if (students[i].dorm == NULL) {
-            printStudentDetails(students[i]);
-        }
-    }
-
-    // Print dorm details after dorm-empty
-    for (size_t i = 0; i < totalDorm; i++) {
-        print_DORMDetails(dorms[i], true);
-    }
+            else if ( strcmp(token, "student-leave") == 0 ) {
+                token = strtok(NULL, DELIMITER);
+                short studentInd = findSTUDENTInd(token, students, totalStudent);
+                short dormInd = findDORMInd(students->dorm->name, dorms, totalDorm);
+                unassign(&students[studentInd], &dorms[dormInd]);
+                students[studentInd].dorm = LEFT;
+            }
 
     return 0;
 }
+}
+
